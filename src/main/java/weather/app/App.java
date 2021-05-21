@@ -1,16 +1,17 @@
 package weather.app;
 
-import java.net.URLEncoder;
+// import java.net.URLEncoder;
 
 import kong.unirest.HttpResponse; //for handling a response
 import kong.unirest.JsonNode; //for assigning a JSON-type to it
 import kong.unirest.Unirest; //for making a GET request
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+// import com.fasterxml.jackson.databind.ObjectMapper;
+// import com.google.gson.Gson;
+// import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public class App {
@@ -25,11 +26,23 @@ public class App {
         System.out.println(response.getStatus());
         System.out.println(response.getHeaders().get("Content-Type"));
         System.out.println("Translation: " + response.getBody());
-        
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode jsonNode = mapper.readTree(response);
-        system
-
+   
+        JsonElement je = JsonParser.parseString(response.getBody().toString());
+        JsonObject jo = je.getAsJsonObject();
+        JsonArray translations = jo.getAsJsonObject("data").getAsJsonArray("translations");
+    
+        System.out.println(translations.toString());
+    
+        for (JsonElement jsonElement : translations) {
+                String text = jsonElement.getAsJsonObject().get("translatedText").getAsString();
+                System.out.println(text);
+        }
+        // //Trying to use object mapping to find particular translation
+        // ObjectMapper mapper = new ObjectMapper();
+        // com.fasterxml.jackson.databind.JsonNode jsonNode = mapper.readTree(response.getBody().toString());
+        // System.out.println(jsonNode);
+        // String result = jsonNode.get("data").get("translations").asText(); //The method get(String) is undefined for the type JsonNode without.getBody().toString() or "response"
+        // System.out.println(result);
 
         // //Prettifying
         // Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -37,10 +50,11 @@ public class App {
         // JsonElement je = jp.parse(response.getBody().toString());
         // String prettyJsonString = gson.toJson(je);
         // System.out.println(prettyJsonString);
-        
+
+        // //Trying to use Gson to find particular translation
         // Gson gson = new Gson();
         // JsonElement jsonElement = gson.toJsonTree(response);
-        // JsonArray jsonArray = jsonElement.getAsJsonObject().get("data").getAsJsonArray();
+        // JsonElement jsonArray = jsonElement.getAsJsonObject().get("data");
         // System.out.println(gson.toJson(jsonArray));
 
 
