@@ -6,7 +6,7 @@ import kong.unirest.json.*;
 import kong.unirest.Unirest; //for making a GET request
 
 
-public class App {
+public class translateApp {
     public static void main(String[] args) throws Exception
     {
     HttpResponse<JsonNode> response = Unirest.post("https://google-translate1.p.rapidapi.com/language/translate/v2")
