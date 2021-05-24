@@ -34,8 +34,7 @@ public class GUI {
         mainFrame.add(inputField, gbc);
 
         //Have to have this above the search button so the dropDown can be found
-        String[] testStrings = {"test 1", "test 2", "test 3"};
-        JComboBox<String> dropDown = new JComboBox<>(testStrings); 
+        JComboBox<String> dropDown = new JComboBox<>(); 
         dropDown.setPreferredSize(new Dimension(200, 20));
         gbc.fill = GridBagConstraints.HORIZONTAL; //don't want text field to be taller.
         gbc.weighty = 0;
@@ -74,6 +73,16 @@ public class GUI {
         gbc.gridx = 2;
         gbc.gridy = 1;
         mainFrame.add(goButton, gbc);
+        //needs an action listener to get the selected option's info
+        goButton.addActionListener((new ActionListener(){
+            public void actionPerformed(ActionEvent evt){
+                weatherApp getWeather = new weatherApp();
+                String[] weatherArray = getWeather.getWeather("test", "test");
+                for(String text : weatherArray){
+                    System.out.println("weatherArray: " + text);
+                }
+            }
+        }));
 
         JLabel fillerTestLabel = new JLabel("This is a test to fill space");
         gbc.weighty = 1; 

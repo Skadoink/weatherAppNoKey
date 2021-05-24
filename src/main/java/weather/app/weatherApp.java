@@ -1,7 +1,6 @@
 package weather.app;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 import kong.unirest.HttpResponse; //for handling a response
 import kong.unirest.JsonNode; //for assigning a JSON-type to it
@@ -34,8 +33,43 @@ public class weatherApp {
         }
         String[] arr = al.toArray(new String[0]); //convert arraylist to array
 
-
         return arr;
+    }
 
+    public String[] getWeather(String lat, String lon){
+
+        HttpResponse<JsonNode> response = Unirest.get("https://api.openweathermap.org/data/2.5/onecall?lat=-41.2866&lon=174.7756&exclude=minutely,hourly,daily,alerts&units=metric&appid=54779f31bf92dc32a033fceb6ac2b82d")
+        .asJson();
+        System.out.println("response.getBody: " + response.getBody());
+
+        JSONObject bodyJsonObject = new JSONObject(response.getBody().getObject());
+        JSONArray current = bodyJsonObject.getJSONArray("current");
+        for(Object jsonObject : current){
+            JSONObject jo = (JSONObject)jsonObject;
+            String temp = jo.getString("temp");
+            System.out.println("temp: " + temp);
+        }
+
+        // String temp = current.getString("temp");
+        // System.out.println("temp: " + temp);
+        
+        // for(Object jsonObject : jsonData){ //object so works in for loop
+        //     JSONObject jo = (JSONObject)jsonObject; //convert back
+        //     JSONObject current = jo.getJSONObject("current"); //get array inside current
+        //     String temp = current.getString("temp");
+        //     System.out.println("temp: " + temp);
+        // }
+
+        Dictionary<String, String> dict = new Hashtable<String, String>();
+        for(int i=0; i<4; i++){
+            //maybe use a json array for key values? or dictionary?
+            //dict.put("temp", temp);
+        }
+
+
+        //get desired info
+        //icon for weather, icon for day or night, temp, condition.
+        String[] placeholder = {"Test", "test"};
+        return placeholder;
     }
 }
