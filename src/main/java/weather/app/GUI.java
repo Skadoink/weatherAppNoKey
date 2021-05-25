@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Dictionary;
 
 public class GUI {
     public static void main(String[] args) throws Exception{
@@ -77,10 +78,10 @@ public class GUI {
         goButton.addActionListener((new ActionListener(){
             public void actionPerformed(ActionEvent evt){
                 weatherApp getWeather = new weatherApp();
-                String[] weatherArray = getWeather.getWeather("test", "test");
-                for(String text : weatherArray){
-                    System.out.println("weatherArray: " + text);
-                }
+                Dictionary<String, String> weatherDict = getWeather.getWeather("test", "test");
+                // for(String text : weatherArray){
+                //     System.out.println("weatherArray: " + text);
+                // }
             }
         }));
 

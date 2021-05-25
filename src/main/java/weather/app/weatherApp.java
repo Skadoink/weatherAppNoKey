@@ -36,40 +36,45 @@ public class weatherApp {
         return arr;
     }
 
-    public String[] getWeather(String lat, String lon){
+    public Dictionary<String, String> getWeather(String lat, String lon){
 
         HttpResponse<JsonNode> response = Unirest.get("https://api.openweathermap.org/data/2.5/onecall?lat=-41.2866&lon=174.7756&exclude=minutely,hourly,daily,alerts&units=metric&appid=54779f31bf92dc32a033fceb6ac2b82d")
         .asJson();
-        System.out.println("response.getBody: " + response.getBody());
-
+        System.out.println("response.getBody: " + response.getBody()); //checking
+        Dictionary<String, String> dict = new Hashtable<String, String>(); //made dictionary for return values
         JSONObject bodyJsonObject = new JSONObject(response.getBody().getObject());
-        JSONArray current = bodyJsonObject.getJSONArray("current");
-        for(Object jsonObject : current){
+        System.out.println("bodyJSONObject is: " + bodyJsonObject); //checking
+
+        String temp = bodyJsonObject.getJSONObject("element").getJSONObject("current").getString("temp"); 
+        System.out.println("temp: " + temp); //checking
+        dict.put("temp", temp);
+
+        JSONArray weather = bodyJsonObject.getJSONObject("element").getJSONObject("current").getJSONArray("weather");
+        System.out.println("weather: " + weather);
+        for(Object jsonObject : weather){
+            System.out.println("jsonObject: " + jsonObject); //checking
             JSONObject jo = (JSONObject)jsonObject;
-            String temp = jo.getString("temp");
-            System.out.println("temp: " + temp);
+            String description = jo.getString("description");
+            dict.put("description", description);
+            String icon = jo.getString("icon");
+            dict.put("icon", icon);
         }
 
-        // String temp = current.getString("temp");
-        // System.out.println("temp: " + temp);
-        
-        // for(Object jsonObject : jsonData){ //object so works in for loop
-        //     JSONObject jo = (JSONObject)jsonObject; //convert back
-        //     JSONObject current = jo.getJSONObject("current"); //get array inside current
-        //     String temp = current.getString("temp");
-        //     System.out.println("temp: " + temp);
-        // }
-
-        Dictionary<String, String> dict = new Hashtable<String, String>();
-        for(int i=0; i<4; i++){
-            //maybe use a json array for key values? or dictionary?
-            //dict.put("temp", temp);
+        //convert time 
+        int dt = bodyJsonObject.getJSONObject("element").getJSONObject("current").getInt("dt");
+        int sunrise = bodyJsonObject.getJSONObject("element").getJSONObject("current").getInt("sunrise");
+        int sunset = bodyJsonObject.getJSONObject("element").getJSONObject("current").getInt("sunset");
+        System.out.println("sunset: " + sunset); //checking
+        if(dt >= sunrise && dt <= sunset){ //if daytime
+            dict.put("dayOrNight", "day");
+        }
+        else{
+            dict.put("dayOrNight", "night");
         }
 
+        System.out.println("dict" + dict); //checking
 
-        //get desired info
-        //icon for weather, icon for day or night, temp, condition.
-        String[] placeholder = {"Test", "test"};
-        return placeholder;
+        //String[] placeholder = {"Test", "test"};
+        return dict;
     }
 }
