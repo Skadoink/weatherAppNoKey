@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.Dictionary;
 
 public class GUI {
@@ -77,11 +78,10 @@ public class GUI {
         //needs an action listener to get the selected option's info
         goButton.addActionListener((new ActionListener(){
             public void actionPerformed(ActionEvent evt){
+                String boxText = dropDown.getSelectedItem().toString();
+                System.out.println("boxText: " + boxText);
                 weatherApp getWeather = new weatherApp();
-                Dictionary<String, String> weatherDict = getWeather.getWeather("test", "test");
-                // for(String text : weatherArray){
-                //     System.out.println("weatherArray: " + text);
-                // }
+                Dictionary<String, String> weatherDict = getWeather.getWeather(boxText);
             }
         }));
 

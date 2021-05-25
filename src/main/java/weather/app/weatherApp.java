@@ -36,9 +36,32 @@ public class weatherApp {
         return arr;
     }
 
-    public Dictionary<String, String> getWeather(String lat, String lon){
+    public Dictionary<String, String> getWeather(String locationString){
 
-        HttpResponse<JsonNode> response = Unirest.get("https://api.openweathermap.org/data/2.5/onecall?lat=-41.2866&lon=174.7756&exclude=minutely,hourly,daily,alerts&units=metric&appid=54779f31bf92dc32a033fceb6ac2b82d")
+        //get lon and lat from combobox string
+        List<String> boxTextList = new ArrayList<String>(Arrays.asList(locationString.split(",")));
+        String lon = "";
+        String lat = "";
+        int counter = 0; //used to figure out if we're up to the lat or the lon in the loop
+        for(String eachString : boxTextList){
+            try{
+                double eachDouble = Double.parseDouble(eachString);
+                counter += 1;
+                if (counter == 1){
+                    lon = eachString;
+                }
+                else{
+                    lat = eachString;
+                }
+            }
+            catch (NumberFormatException exc){
+            }
+        }
+        lon = lon.substring(1);
+        lat = lat.substring(1);
+        System.out.println("lon: " + lon + ", lat: " + lat); //checking
+
+        HttpResponse<JsonNode> response = Unirest.get("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly,daily,alerts&units=metric&appid=54779f31bf92dc32a033fceb6ac2b82d")
         .asJson();
         System.out.println("response.getBody: " + response.getBody()); //checking
         Dictionary<String, String> dict = new Hashtable<String, String>(); //made dictionary for return values
