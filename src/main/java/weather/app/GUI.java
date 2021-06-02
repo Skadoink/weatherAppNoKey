@@ -4,8 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
+import java.io.IOException;
 import java.util.Dictionary;
+import java.net.MalformedURLException;
+import java.net.URL;
+import javax.imageio.ImageIO;
 
 public class GUI {
     public static void main(String[] args) throws Exception{
@@ -14,6 +17,7 @@ public class GUI {
         mainFrame.setLocationRelativeTo(null);  
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setVisible(true);
+
 
         GridBagConstraints gbc = new GridBagConstraints();
 
@@ -82,15 +86,45 @@ public class GUI {
                 System.out.println("boxText: " + boxText);
                 weatherApp getWeather = new weatherApp();
                 Dictionary<String, String> weatherDict = getWeather.getWeather(boxText);
+                //had to use html <br> because /n doesn't work in jlabel
+                JLabel weatherLabel = new JLabel("<html>" + "Day or night: " + weatherDict.get("dayOrNight") + "<br>Temperature: " + weatherDict.get("temp") + "<br> Condition: " + weatherDict.get("description") + "</html>");
+                gbc.weighty = 1; 
+                gbc.gridx = 0; 
+                gbc.gridy = 2; 
+                weatherLabel.setOpaque(true);
+                weatherLabel.setBackground(Color.pink);
+                gbc.gridwidth = 2; //so it doesnt make grid 1 wide
+                mainFrame.add(weatherLabel, gbc);
+                mainFrame.pack();
+
+                Image image = null;
+                URL url = null;
+                try {
+                    url = new URL("http://openweathermap.org/img/wn/" + weatherDict.get("icon") + "@2x.png");
+                    image = ImageIO.read(url);
+                } catch (MalformedURLException ex) {
+                    System.out.println("Malformed URL");
+                } catch (IOException iox) {
+                    System.out.println("Can not load file");
+                }
+                gbc.weighty = 1;
+                gbc.gridx = 2;
+                gbc.gridy = 2;
+                gbc.gridwidth = 1;
+                JLabel iconLabel = new JLabel(new ImageIcon(image));
+                iconLabel.setOpaque(true);
+                iconLabel.setBackground(Color.pink);
+                mainFrame.add(iconLabel, gbc);
+                mainFrame.pack();
             }
         }));
 
-        JLabel fillerTestLabel = new JLabel("This is a test to fill space");
-        gbc.weighty = 1; 
-        gbc.gridx = 0; 
-        gbc.gridy = 2; 
-        gbc.gridwidth = 3; //so it doesnt make grid 1 wide
-        mainFrame.add(fillerTestLabel, gbc);
+        // JLabel fillerTestLabel = new JLabel("This is a test to fill space");
+        // gbc.weighty = 1; 
+        // gbc.gridx = 0; 
+        // gbc.gridy = 2; 
+        // gbc.gridwidth = 3; //so it doesnt make grid 1 wide
+        // mainFrame.add(fillerTestLabel, gbc);
 
         mainFrame.pack();
     }

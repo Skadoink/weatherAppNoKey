@@ -47,7 +47,7 @@ public class weatherApp {
             try{
                 double eachDouble = Double.parseDouble(eachString);
                 counter += 1;
-                if (counter == 1){
+                if (counter == 1){ //works, but bad efficiency
                     lon = eachString;
                 }
                 else{
