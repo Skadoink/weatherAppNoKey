@@ -118,14 +118,6 @@ public class GUI {
                 mainFrame.pack();
             }
         }));
-
-        // JLabel fillerTestLabel = new JLabel("This is a test to fill space");
-        // gbc.weighty = 1; 
-        // gbc.gridx = 0; 
-        // gbc.gridy = 2; 
-        // gbc.gridwidth = 3; //so it doesnt make grid 1 wide
-        // mainFrame.add(fillerTestLabel, gbc);
-
         mainFrame.pack();
     }
 }

@@ -45,7 +45,6 @@ public class weatherApp {
         int counter = 0; //used to figure out if we're up to the lat or the lon in the loop
         for(String eachString : boxTextList){
             try{
-                double eachDouble = Double.parseDouble(eachString);
                 counter += 1;
                 if (counter == 1){ //works, but bad efficiency
                     lon = eachString;
@@ -61,7 +60,7 @@ public class weatherApp {
         lat = lat.substring(1);
         System.out.println("lon: " + lon + ", lat: " + lat); //checking
 
-        HttpResponse<JsonNode> response = Unirest.get("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly,daily,alerts&units=metric&appid=54779f31bf92dc32a033fceb6ac2b82d")
+        HttpResponse<JsonNode> response = Unirest.get("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly,daily,alerts&units=metric&appid=APIKEYHERE")
         .asJson();
         System.out.println("response.getBody: " + response.getBody()); //checking
         Dictionary<String, String> dict = new Hashtable<String, String>(); //made dictionary for return values
